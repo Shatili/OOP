@@ -1,12 +1,12 @@
 class Student:
-    def __init__(self, name, surname, gender):
+    def __init__(self, name, surname):
         self.name = name
         self.surname = surname
-        self.gender = gender
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
         self.average_rating = float()
+        self.courses_attached = []
     
     def __str__(self):
         grades_count = 0
@@ -70,14 +70,89 @@ class Reviewer(Mentor):
             return 'Ошибка'
     def _str_(self):
         some_reviewer = f'Имя: {self.name}\nФамилия: {self.surname}'                         
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
- 
-cool_mentor = Reviewer('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python']
- 
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
- 
-print(best_student.grades)
+
+student_1 = Student('Igor', 'Ivanov')
+student_1.courses_in_progress += ['Git', 'Python']
+student_1.finished_courses += ['Введение в программирование']
+
+student_2 = Student('Kiril', 'Petrov')
+student_2.courses_in_progress += ["Git", 'Python']
+student_2.finished_courses += ['Введение в программирование']
+
+student_3 = Student('Egor', 'Sidorov')
+student_3.courses_in_progress += ['Git', 'Python']
+student_3.finished_courses += ['Введение в программирование']
+
+lecturer_1 = Lecturer('Irina', 'Ivanova')
+lecturer_1.courses_attached += ['Git', 'Python']
+
+lecturer_2 = Lecturer('Natalia', 'Petrova')
+lecturer_2.courses_attached += ['Git']
+
+lecturer_3 = Lecturer('Alena', 'Sidorova')
+lecturer_3.courses_attached += ['Python']
+
+reviewer_1 = Reviewer('Anton', 'Pupkin')
+reviewer_1.courses_attached += ['Git', 'Python']
+
+reviewer_2 = Reviewer('Alex', 'Dorofeev')
+reviewer_2.courses_attached += ['Git']
+
+reviewer_3 = Reviewer('Sergey', 'Vanin')
+reviewer_3.courses_attached += ['Python']
+
+student_1.rate_hw(lecturer_1, 'Git', 10)
+student_1.rate_hw(lecturer_1, 'Python', 7)
+student_1.rate_hw(lecturer_2, 'Git', 9)
+student_1.rate_hw(lecturer_3, 'Python', 10)
+
+student_2.rate_hw(lecturer_1, 'Git', 10)
+student_2.rate_hw(lecturer_1, 'Python', 9)
+student_2.rate_hw(lecturer_2, 'Git', 10)
+student_2.rate_hw(lecturer_3, 'Python', 5)
+
+student_3.rate_hw(lecturer_1, 'Git', 6)
+student_3.rate_hw(lecturer_1, 'Python', 10)
+student_3.rate_hw(lecturer_2, 'Git', 8)
+student_3.rate_hw(lecturer_3, 'Python', 9)
+
+reviewer_1.rate_hw(student_1, 'Git', 10)
+reviewer_1.rate_hw(student_1, 'Python', 9)
+reviewer_1.rate_hw(student_2, 'Git', 10)
+reviewer_1.rate_hw(student_2, 'Python', 8)
+reviewer_1.rate_hw(student_3, 'Git', 6)
+reviewer_1.rate_hw(student_3, 'Python', 8)
+
+reviewer_2.rate_hw(student_1, 'Git', 10)
+reviewer_2.rate_hw(student_2, 'Git', 9)
+reviewer_2.rate_hw(student_3, 'Git', 8)
+
+reviewer_3.rate_hw(student_1, 'Python', 7)
+reviewer_3.rate_hw(student_2, 'Python', 10)
+reviewer_3.rate_hw(student_3, 'Python', 6)
+
+student_list = [student_1, student_2, student_3]
+
+lecturer_list = [lecturer_1, lecturer_2, lecturer_3]
+
+def student_rating(student_list, course_name):
+  sum_all = 0
+  count_all = 0
+  for student in student_list:
+      if course_name in student.grades:
+          sum_all += sum(student.grades[course_name])
+          count_all += len(student.grades[course_name])
+  return sum_all / count_all
+            
+def average_rating_lecturer(lecturer_list, course):
+    sum_all = 0
+    count_all = 0
+    for lecturer in lecturer_list:
+        if course in lecturer.grades:
+            sum_all += sum(lecturer.grades[course])
+            count_all += len(lecturer.grades[course])
+    return sum_all / count_all
+
+print(f"Средняя оценка для всех студентов по курсу {'Git'}: {student_rating(student_list, 'Git')}")
+
+print(f"Средняя оценка для всех лекторов по курсу {'Git'}: {average_rating_lecturer(lecturer_list, 'Git')}")
